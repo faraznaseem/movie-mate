@@ -1,4 +1,3 @@
-
 import {getTrendingMovies, updateSearchCount} from "./appwrite.js";
 
 // Configure API Request.
@@ -13,11 +12,11 @@ const API_OPTIONS = {
 }
 
 // Fetch the movies.
-export const fetchMovies = async (query = '') => {
+export const fetchMovies = async (query = '', page) => {
     try {
-        const endpoint = query
-            ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
-            : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+        const endpoint = query.trim()
+            ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&page=${page}`
+            : `${API_BASE_URL}/discover/movie?page=${page}&sort_by=popularity.desc`; // Fetch most popular movies if query is empty
         const response = await fetch(endpoint, API_OPTIONS);
         if (!response.ok) {
             throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
@@ -28,15 +27,19 @@ export const fetchMovies = async (query = '') => {
         }
         if (!data.results?.length) {
             console.log(data.Error || 'Failed to fetch movies');
-            return [];
+            return [[], 0];
+        }
+        if (!data.total_pages) {
+            console.log(data.Error || 'Failed to fetch page numbers');
+            return [[], 0];
         }
         if (query && data.results.length > 0) {
             await updateSearchCount(query, data.results[0]);
         }
-        return data.results || [];
+        return [data.results, data.total_pages];
     } catch (error) {
         console.log(`Error fetching movies ${error}`);
-        return [];
+        return [[], 0];
     }
 }
 
