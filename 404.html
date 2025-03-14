@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redirecting...</title>
-  <script>
-    var path = window.location.pathname;
-    sessionStorage.redirect = path;
-    window.location.replace("/movie-mate/");
-  </script>
-</head>
-<body>
-  Redirecting...
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting...</title>
+    <script>
+      (function () {
+        var redirectTo = window.location.pathname + window.location.search;
+        var basePath = "/movie-mate"; // Change this if your repo name is different
+
+        // Ensure we only redirect if we're not already on the homepage
+        if (!redirectTo.startsWith(basePath)) {
+          redirectTo = basePath + redirectTo;
+        }
+
+        window.location.replace(redirectTo);
+      })();
+    </script>
+  </head>
+  <body>
+    Redirecting...
+  </body>
 </html>
