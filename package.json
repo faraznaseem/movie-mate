@@ -7,6 +7,7 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
+    "postbuild": "copy 404.html dist\\",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
