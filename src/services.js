@@ -71,3 +71,27 @@ export const loadTrendingMovies = async () => {
     return [];
   }
 };
+
+/**
+ * Fetch a movie by its ID from the TMDB API.
+ * @param {number|string} id - The ID of the movie to fetch.
+ * @returns {Promise<Array>} an array of movie objects.
+ */
+export const fetchMovieById = async (id) => {
+  const endpoint = `${API_BASE_URL}/movie/${id}`;
+  try {
+    const response = await fetch(endpoint, API_OPTIONS);
+    if (!response.ok) {
+      throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
+    }
+    const data = await response.json();
+    // Log the data in development mode
+    if (import.meta.env.MODE === "development") {
+      console.log(data);
+    }
+    return data || {};
+  } catch (error) {
+    console.log(`Error fetching movie by id ${error}`);
+    return {};
+  }
+};

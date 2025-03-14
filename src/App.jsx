@@ -4,8 +4,10 @@ import { useState } from "react";
 import { useDebounce } from "react-use";
 import Spinner from "./components/Spinner.jsx";
 import MovieCard from "./components/MovieCard.jsx";
+import MovieOverview from "./components/MovieOverview.jsx";
 import { fetchMovies, loadTrendingMovies } from "./services.js";
 import Pagination from "./components/Pagination.jsx";
+import { Route, Routes } from "react-router-dom";
 
 // The main app rendering component.
 const App = () => {
@@ -14,7 +16,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [movieList, setMovieList] = useState([]);
   const [trendingMovieList, setTrendingMovieList] = useState([]);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -24,7 +26,7 @@ const App = () => {
   // Call fetch movies on whenever debounced search term state changes.
   useEffect(() => {
     (async () => {
-      setLoading(true);
+      setIsLoading(true);
       setErrorMessage("");
       const [results, total_pages] = await fetchMovies(
         debouncedSearchTerm,
@@ -43,7 +45,7 @@ const App = () => {
           setTotalPages(total_pages);
         }
       }
-      setLoading(false);
+      setIsLoading(false);
     })();
   }, [debouncedSearchTerm, currentPage]);
 
@@ -56,60 +58,68 @@ const App = () => {
   }, []);
 
   return (
-    <main>
-      <div className="pattern" />
-      <div className="wrapper">
-        <header>
-          <img src="./logo.svg" alt="Logo" className="w-20 h-20" />
-          <img src="./hero.png" alt="Hero Banner" />
-          <h1>
-            Find <span className="text-gradient">Movies</span> You&#39;ll Enjoy
-            Without the Hassle
-          </h1>
-          <Search
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            setPageNumber={setCurrentPage}
-          />
-        </header>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <main>
+            <div className="pattern" />
+            <div className="wrapper">
+              <header>
+                <img src="./logo.svg" alt="Logo" className="w-20 h-20" />
+                <img src="./hero.png" alt="Hero Banner" />
+                <h1>
+                  Find <span className="text-gradient">Movies</span> You&#39;ll
+                  Enjoy Without the Hassle
+                </h1>
+                <Search
+                  searchTerm={searchTerm}
+                  setSearchTerm={setSearchTerm}
+                  setPageNumber={setCurrentPage}
+                />
+              </header>
 
-        {trendingMovieList.length > 0 && (
-          <section className="trending">
-            <h2>Trending</h2>
-            <ul>
-              {trendingMovieList.map((movie, index) => (
-                <li key={movie.movie_id}>
-                  <p>{index + 1}</p>
-                  <img src={movie.poster_url} alt={movie.title} />
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
+              {trendingMovieList.length > 0 && (
+                <section className="trending">
+                  <h2>Trending</h2>
+                  <ul>
+                    {trendingMovieList.map((movie, index) => (
+                      <li key={movie.movie_id}>
+                        <p>{index + 1}</p>
+                        <img src={movie.poster_url} alt={movie.title} />
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
 
-        <section className="all-movies">
-          <h2>All Movies</h2>
-          {isLoading ? (
-            <Spinner />
-          ) : errorMessage ? (
-            <p className="text-red-500">{errorMessage}</p>
-          ) : (
-            <ul>
-              {movieList.map((movie) => (
-                <MovieCard key={movie.id} movie={movie} />
-              ))}
-            </ul>
-          )}
-        </section>
-        <footer>
-          <Pagination
-            totalPages={totalPages}
-            setPageNumber={setCurrentPage}
-            currentPage={currentPage}
-          />
-        </footer>
-      </div>
-    </main>
+              <section className="all-movies">
+                <h2>All Movies</h2>
+                {isLoading ? (
+                  <Spinner />
+                ) : errorMessage ? (
+                  <p className="text-red-500">{errorMessage}</p>
+                ) : (
+                  <ul>
+                    {movieList.map((movie) => (
+                      <MovieCard key={movie.id} movie={movie} />
+                    ))}
+                  </ul>
+                )}
+              </section>
+              <footer>
+                <Pagination
+                  totalPages={totalPages}
+                  setPageNumber={setCurrentPage}
+                  currentPage={currentPage}
+                />
+              </footer>
+            </div>
+          </main>
+        }
+      />
+      <Route path="/movie/:movieId" element={<MovieOverview />} />
+    </Routes>
   );
 };
 
