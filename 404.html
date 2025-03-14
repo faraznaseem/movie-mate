@@ -6,16 +6,20 @@
     <title>Redirecting...</title>
     <script>
       (function () {
-        var basePath = "/movie-mate"; // Update this to match your repo name
+        var basePath = "/movie-mate"; // Change this if your repo name is different
         var currentPath = window.location.pathname + window.location.search;
-        var redirectPath = basePath + currentPath;
 
-        // Check if the redirect has already happened to avoid infinite loop
-        if (sessionStorage.redirected !== "true") {
-          sessionStorage.redirected = "true"; // Mark as redirected
-          window.location.replace(redirectPath);
-        } else {
-          sessionStorage.removeItem("redirected"); // Allow normal navigation next time
+        // Prevent adding basePath multiple times
+        if (!currentPath.startsWith(basePath)) {
+          var redirectPath = basePath + currentPath;
+
+          // Prevent infinite redirect loop
+          if (sessionStorage.redirected !== "true") {
+            sessionStorage.redirected = "true";
+            window.location.replace(redirectPath);
+          } else {
+            sessionStorage.removeItem("redirected"); // Allow normal navigation next time
+          }
         }
       })();
     </script>
