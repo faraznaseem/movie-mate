@@ -6,7 +6,7 @@ const Pagination = ({ totalPages, setPageNumber, currentPage }) => {
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
-      {pages.map((pageNumber, index) =>
+      {pages.map((pageNumber) =>
         pageNumber < 6 ||
         pageNumber > totalPages - 2 ||
         Math.abs(pageNumber - currentPage) <= 2 ? (
@@ -15,15 +15,16 @@ const Pagination = ({ totalPages, setPageNumber, currentPage }) => {
             className={`px-8 py-4 rounded-md
                             ${
                               pageNumber === currentPage
-                                ? "bg-blue-800 text-white font-bold cursor-pointer"
+                                ? "bg-blue-800 text-white font-bold cursor-not-allowed"
                                 : "bg-dark-100 text-white font-bold cursor-pointer"
                             }
                             hover:bg-blue-950 transition`}
             onClick={() => setPageNumber(pageNumber)}
+            disabled={pageNumber === currentPage}
           >
             {pageNumber}
           </button>
-        ) : pageNumber === 6 ? (
+        ) : pageNumber === 6 && totalPages > 7 ? (
           <span key={pageNumber} className="px-8 text-gray-400">
             ...
           </span>
