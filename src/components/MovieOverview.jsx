@@ -9,12 +9,19 @@ const MovieOverview = () => {
   const { movieId } = useParams();
   const [movieResult, setMovieResult] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [trailerUrl, setTrailerUrl] = useState("");
 
   useEffect(() => {
     (async () => {
       setIsLoading(true);
       const result = await fetchMovieById(movieId);
       setMovieResult(result);
+      // Sets the trailer url if found otherwise sets a sample trailer.
+      const trailer =
+        result.videos?.results.find(
+          (video) => video.type === "Trailer" && video.site === "YouTube"
+        )?.key ?? "sample-trailer";
+      setTrailerUrl(`https://www.youtube.com/embed/${trailer}`);
       setIsLoading(false);
     })();
   }, [movieId]);
@@ -34,19 +41,34 @@ const MovieOverview = () => {
                   : "../no-movie.png"
               }
               alt={movieResult.title || "No poster available"}
-              className="rounded-lg w-full h-auto object-cover"
+              className="rounded-lg w-full h-full object-cover"
             />
             <div className="md:col-span-2">
               <h1>{movieResult.title || "N/A"}</h1>
-              <p className="text-gray-100 text-lg">
-                {movieResult.release_date} • {movieResult.status || "N/A"} •{" "}
-                {Math.floor(movieResult.runtime / 60)}h{" "}
-                {movieResult.runtime % 60}m
+              <p className="text-gray-100 text-lg text-center">
+                {movieResult.release_date || "N/A"} •{" "}
+                {movieResult.status || "N/A"} •{" "}
+                {movieResult.runtime !== 0
+                  ? Math.floor(movieResult.runtime / 60) +
+                    "h" +
+                    " " +
+                    (movieResult.runtime % 60) +
+                    "m"
+                  : "N/A"}
               </p>
-              <div className="mt-3">
+              <div className="mt-3 aspect-video">
+                {trailerUrl.endsWith("sample-trailer") ? (
+                  <p className="text-white text-lg text-center p-4">
+                    🎬 Trailer Not Available
+                  </p>
+                ) : (
+                  <p className="text-white text-lg text-center p-4">
+                    🎬 Watch Trailer
+                  </p>
+                )}
                 <iframe
-                  className="w-full h-64 rounded-lg"
-                  src="https://www.youtube.com/embed/sample-trailer"
+                  className="w-full h-full rounded-lg"
+                  src={trailerUrl}
                   title="Trailer"
                   allowFullScreen
                 ></iframe>
@@ -124,7 +146,7 @@ const MovieOverview = () => {
             </div>
             <Link to={`/`}>
               <div className="flex justify-start">
-                <button className="inline-block mt-4 px-4 py-2 bg-light-100 text-dark-100 rounded-lg cursor-pointer">
+                <button className="inline-block mt-4 px-4 py-2 bg-light-100 text-dark-100 rounded-lg cursor-pointer hover:bg-light-200 active:bg-light-200">
                   Visit Homepage →
                 </button>
               </div>

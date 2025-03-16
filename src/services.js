@@ -73,12 +73,12 @@ export const loadTrendingMovies = async () => {
 };
 
 /**
- * Fetch a movie by its ID from the TMDB API.
+ * Fetch movie details and trailer by its ID from the TMDB API.
  * @param {number|string} id - The ID of the movie to fetch.
- * @returns {Promise<Array>} an array of movie objects.
+ * @returns {Promise<Object>} A promise that resolves to the movie object.
  */
 export const fetchMovieById = async (id) => {
-  const endpoint = `${API_BASE_URL}/movie/${id}`;
+  const endpoint = `${API_BASE_URL}/movie/${id}?append_to_response=videos`;
   try {
     const response = await fetch(endpoint, API_OPTIONS);
     if (!response.ok) {

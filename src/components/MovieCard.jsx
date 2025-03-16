@@ -4,7 +4,7 @@ const MovieCard = ({
 }) => {
   return (
     <Link to={`/movie/${id}`}>
-      <div className="movie-card hover:scale-110 sm:hover:scale-125 md:hover:scale-125 transition duration-200 cursor-pointer">
+      <div className="movie-card active:scale-125 hover:scale-110 sm:hover:scale-125 md:hover:scale-125 transition duration-200 cursor-pointer">
         <img
           src={
             poster_path
