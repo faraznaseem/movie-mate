@@ -44,7 +44,10 @@ Create a `.env` file in the root directory and add:
 
 ```env
 VITE_TMDB_API_KEY=your_api_key_here
+
 VITE_APPWRITE_PROJECT_ID=your_project_id_here
+VITE_APPWRITE_DATABASE_ID=your_database_id_here
+VITE_APPWRITE_COLLECTION_ID=your_collection_id_here
 ```
 
 ## 📦 Installation
