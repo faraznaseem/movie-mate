@@ -45,3 +45,8 @@ Create a `.env` file in the root directory and add:
 ```env
 VITE_TMDB_API_KEY=your_api_key_here
 VITE_APPWRITE_PROJECT_ID=your_project_id_here
+
+git clone https://github.com/your-username/movie-app.git
+cd movie-app
+npm install
+npm run dev
