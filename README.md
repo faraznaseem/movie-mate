@@ -27,6 +27,16 @@ A responsive movie discovery web application built with React that allows users 
 
 ## ⚙️ Key Implementations
 
+### 🔹 Trending Movies System (Appwrite Powered)
+Built a dynamic trending system using Appwrite database to track user search frequency. 
+
+- Each movie search increments a search count in the database  
+- Movies are ranked based on search popularity  
+- Top 5 most searched movies are displayed as "Trending"  
+- Ensures real-time relevance based on actual user behavior  
+
+This approach mimics real-world platforms where trending content is driven by user engagement rather than static data.
+
 ### 🔹 Debounced Search
 Implemented debouncing to reduce unnecessary API calls and improve performance during user input.
 
