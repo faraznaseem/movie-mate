@@ -50,7 +50,7 @@ VITE_APPWRITE_PROJECT_ID=your_project_id_here
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/your-username/movie-app.git
+git clone https://github.com/faraznaseem/movie-mate.git
 cd movie-app
 npm install
 npm run dev
