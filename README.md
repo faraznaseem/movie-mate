@@ -21,7 +21,7 @@ A responsive movie discovery web application built with React that allows users 
 - Vite – Fast development build tool  
 - Tailwind CSS – Utility-first CSS framework for styling  
 - TMDB API – Movie data provider  
-- Appwrite – Backend-as-a-service (if used for data/storage)  
+- Appwrite – Backend-as-a-service
 
 ---
 
